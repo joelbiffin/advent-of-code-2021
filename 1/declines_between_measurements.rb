@@ -61,3 +61,18 @@
 # How many measurements are larger than the previous measurement?
 
 
+class NumberOfDeclinesBetweenMeasurements
+  def self.from(depths:)
+    depths.reduce({increases: 0, previous: depths.first}) { |memo, depth|
+      {
+        increases: memo[:increases] + (memo[:previous] < depth ? 1 : 0),
+        previous: depth
+      }
+    }[:increases]
+  end
+end
+
+
+problem_set = File.readlines("input.txt").map(&:to_i)
+solution = NumberOfDeclinesBetweenMeasurements.from(depths: problem_set)
+puts solution
