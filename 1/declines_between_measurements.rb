@@ -73,6 +73,24 @@ class NumberOfDeclinesBetweenMeasurements
 end
 
 
+class ThreeStepSum
+  class << self
+    def create(depths:)
+      memo = []
+
+      depths.each_with_index do |this_depth, i|
+        next if i < 2
+        memo << depths[(i - 2)..i].reduce(0, :+)
+      end
+
+      memo
+    end
+  end
+end
+
 problem_set = File.readlines("input.txt").map(&:to_i)
-solution = NumberOfDeclinesBetweenMeasurements.from(depths: problem_set)
+solution = NumberOfDeclinesBetweenMeasurements.from(
+  depths: ThreeStepSum.create(depths: problem_set)
+)
+
 puts solution
